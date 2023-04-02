@@ -1,0 +1,25 @@
+﻿@model List<Bookstore.Models.Domain.Book>
+@{
+    ViewData["Title"] = "Books";
+}
+@{
+}
+
+<h1>Books</h1>
+<table class="table">
+    <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach(var book in Model)
+        {
+            <tr>
+                <td>@book.Id</td>
+                <td>@book.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
