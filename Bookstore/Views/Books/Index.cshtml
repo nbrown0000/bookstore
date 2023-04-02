@@ -6,6 +6,13 @@
 }
 
 <h1>Books</h1>
+
+<form method="get" action="/Books/Index" class="input-group mb-3">
+    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Title to search">
+    <input class="btn btn-outline-secondary" type="submit" value="search" />
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to full list</a>
+</form>
+
 <table class="table">
     <thead>
             <tr>

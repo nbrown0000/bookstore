@@ -1,4 +1,5 @@
 ﻿using Bookstore.Data;
+using Bookstore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,17 @@ namespace Bookstore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var books = await context.Books.ToListAsync();
 
-            return View(books);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var books = await context.Books.Where(b => b.Title.Contains(searchString)).ToListAsync();
+                return View(books);
+            }
+
+            var booksList = await context.Books.ToListAsync();
+            return View(booksList);
         }
     }
 }
