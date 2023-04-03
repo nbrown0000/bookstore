@@ -3,8 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
 
 builder.Services.AddDbContext<BookstoreDBContext>(options =>
     options.UseSqlServer(builder.Configuration
@@ -34,6 +46,18 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
+app.MapControllerRoute(
+    name: "UserLogin",
+    pattern: "User/Login",
+    defaults: new { controller = "User", action = "Login" });
+
+app.MapControllerRoute(
+    name: "BooksRoute",
+    pattern: "Books/Index",
+    defaults: new { controller = "Books", action = "Index" });
 
 app.MapControllerRoute(
     name: "default",

@@ -2,8 +2,12 @@
 @{
     ViewData["Title"] = "Books";
 }
-@{
-}
+@*@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor*@
+ 
+@*@{
+    Layout = null;
+}*@
 
 <h1>Books</h1>
 
@@ -13,11 +17,19 @@
     <a class="btn btn-outline-secondary" asp-action="Index">Back to full list</a>
 </form>
 
+@*<p>
+    @if (!String.IsNullOrEmpty(@Accessor.HttpContext.Session.GetString("ErrorMessage")))
+    {
+        @Accessor.HttpContext.Session.GetString("ErrorMessage")
+    }
+</p>*@
+
 <table class="table">
     <thead>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
+                <th> </th>
             </tr>
     </thead>
     <tbody>
@@ -26,6 +38,14 @@
             <tr>
                 <td>@book.Id</td>
                 <td>@book.Title</td>
+                <td>
+                    @if (@book.ReservedBy != Guid.Empty) {
+                        <span class="text-warning">RESERVED</span>
+                    }
+                    @if (@book.ReservedBy == Guid.Empty) {
+                        <a asp-controller="Books" asp-action="Reserve" asp-route-id="@book.Id">Reserve Book</a>
+                    }
+                </td>
             </tr>
         }
     </tbody>
